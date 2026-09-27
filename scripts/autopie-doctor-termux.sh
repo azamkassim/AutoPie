@@ -66,10 +66,25 @@ if [[ "$HOME_AVAIL_KB" =~ ^[0-9]+$ ]]; then
   fi
 fi
 
-if command -v pm >/dev/null 2>&1 && pm path com.autopi >/dev/null 2>&1; then
-  warn "com.autopi is already installed. Android will only update it if the APK signing certificate matches."
+PACKAGE_PATH=""
+PACKAGE_CHECK=""
+
+if command -v rish >/dev/null 2>&1; then
+  PACKAGE_PATH="$(rish -c 'pm path com.autopi' 2>/dev/null | head -n 1 || true)"
+  PACKAGE_CHECK="rish"
+elif command -v pm >/dev/null 2>&1; then
+  PACKAGE_PATH="$(pm path com.autopi 2>/dev/null | head -n 1 || true)"
+  PACKAGE_CHECK="pm"
+fi
+
+if [[ "$PACKAGE_PATH" == package:* ]]; then
+  pass "AutoPie installed ($PACKAGE_CHECK): $PACKAGE_PATH"
 else
-  pass "No existing com.autopi installation was detected (or package visibility is restricted)."
+  if [[ -n "$PACKAGE_CHECK" ]]; then
+    pass "AutoPie is not currently detected via $PACKAGE_CHECK."
+  else
+    warn "Could not check whether AutoPie is installed: neither rish nor pm is usable."
+  fi
 fi
 
 printf '%s\n' '------------------------------------------'
