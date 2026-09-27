@@ -29,6 +29,10 @@ if [[ "$SDK" =~ ^[0-9]+$ ]]; then
   else
     fail "Android API $SDK is below AutoPie minSdk 27."
   fi
+
+  if (( SDK == 34 || SDK == 35 )); then
+    pass "AutoPie targetSdk 28 is above the Android 14/15 sideload minimum target API."
+  fi
 else
   warn "Could not read Android API level with getprop."
 fi
@@ -39,13 +43,19 @@ else
   warn "This does not look like the standard Termux environment. PREFIX=${PREFIX:-unset}"
 fi
 
-for tool in curl python3 sha256sum termux-open; do
+for tool in curl sha256sum termux-open; do
   if command -v "$tool" >/dev/null 2>&1; then
-    pass "Tool available: $tool"
+    pass "Install tool available: $tool"
   else
-    fail "Missing tool: $tool"
+    fail "Missing install tool: $tool"
   fi
 done
+
+if command -v python3 >/dev/null 2>&1; then
+  pass "Optional development tool available: python3"
+else
+  warn "python3 is not installed in the host Termux session. This does not block APK installation."
+fi
 
 HOME_AVAIL_KB="$(df -Pk "$HOME" 2>/dev/null | awk 'NR==2 {print $4}' || true)"
 if [[ "$HOME_AVAIL_KB" =~ ^[0-9]+$ ]]; then
