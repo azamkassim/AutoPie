@@ -68,23 +68,34 @@ fi
 
 PACKAGE_PATH=""
 PACKAGE_CHECK=""
+PACKAGE_QUERY_OK=0
 
-if command -v rish >/dev/null 2>&1; then
-  PACKAGE_PATH="$(rish -c 'pm path com.autopi' 2>/dev/null | head -n 1 || true)"
-  PACKAGE_CHECK="rish"
-elif command -v pm >/dev/null 2>&1; then
-  PACKAGE_PATH="$(pm path com.autopi 2>/dev/null | head -n 1 || true)"
-  PACKAGE_CHECK="pm"
-fi
+# A present rish executable can still fail when Shizuku is stopped. Try pm too.
+for checker in rish pm; do
+  command -v "$checker" >/dev/null 2>&1 || continue
+  if [[ "$checker" == rish ]]; then
+    if PACKAGE_PATH="$(rish -c 'pm path com.autopi' 2>/dev/null)"; then
+      PACKAGE_QUERY_OK=1
+    else
+      continue
+    fi
+  else
+    if PACKAGE_PATH="$(pm path com.autopi 2>/dev/null)"; then
+      PACKAGE_QUERY_OK=1
+    else
+      continue
+    fi
+  fi
+  PACKAGE_CHECK="$checker"
+  break
+done
 
 if [[ "$PACKAGE_PATH" == package:* ]]; then
   pass "AutoPie installed ($PACKAGE_CHECK): $PACKAGE_PATH"
+elif (( PACKAGE_QUERY_OK )); then
+  warn "Package query via $PACKAGE_CHECK returned no visible AutoPie package; installation status is unconfirmed."
 else
-  if [[ -n "$PACKAGE_CHECK" ]]; then
-    pass "AutoPie is not currently detected via $PACKAGE_CHECK."
-  else
-    warn "Could not check whether AutoPie is installed: neither rish nor pm is usable."
-  fi
+  warn "Could not verify AutoPie installation: package queries were unavailable or failed."
 fi
 
 printf '%s\n' '------------------------------------------'
@@ -93,3 +104,5 @@ printf 'Result: %d failure(s), %d warning(s)\n' "$FAILURES" "$WARNINGS"
 if (( FAILURES > 0 )); then
   exit 1
 fi
+
+exit 0
