@@ -2,14 +2,14 @@
 set -euo pipefail
 
 # Verified installer for the source-identical upstream release.
-# Fork main at creation: 10e85e2bdd4ebb0c8dedf995b23ac5763d60c16b
-# Upstream tag:          v0.19.0-beta
-# APK SHA-256:           3cbf48102124ddd20b36637074ef40b032b55146f3afd07a5c6eddbf1078ccd6
+# Upstream app revision: 8c5e83b119b3d7517141c704b8d17a6490a8820b
+# Upstream tag:          v0.19.3-beta
+# APK SHA-256:           c1d140a165f09af8433e8d0b855a363f8a394477038a1b1cb1951f9e444ef7a7
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TAG="${AUTOPIE_INSTALL_TAG:-v0.19.0-beta}"
-ASSET="${AUTOPIE_INSTALL_ASSET:-AutoPie-v0.19.0-beta-aarch64.apk}"
-EXPECTED_SHA256="${AUTOPIE_INSTALL_SHA256:-3cbf48102124ddd20b36637074ef40b032b55146f3afd07a5c6eddbf1078ccd6}"
+TAG="${AUTOPIE_INSTALL_TAG:-v0.19.3-beta}"
+ASSET="${AUTOPIE_INSTALL_ASSET:-AutoPie-v0.19.3-beta-aarch64.apk}"
+EXPECTED_SHA256="${AUTOPIE_INSTALL_SHA256:-c1d140a165f09af8433e8d0b855a363f8a394477038a1b1cb1951f9e444ef7a7}"
 DOWNLOAD_URL="${AUTOPIE_INSTALL_URL:-https://github.com/cryptrr/AutoPie/releases/download/${TAG}/${ASSET}}"
 DEST_DIR="${AUTOPIE_INSTALL_DIR:-$HOME/downloads/autopie}"
 DEST="$DEST_DIR/$ASSET"

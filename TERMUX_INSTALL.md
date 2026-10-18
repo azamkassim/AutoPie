@@ -1,17 +1,17 @@
 # AutoPie — verified Android / Termux installation
 
-This fork was created from upstream AutoPie commit
-`10e85e2bdd4ebb0c8dedf995b23ac5763d60c16b`, which is the same commit tagged
-upstream as `v0.19.0-beta`.
+This branch includes upstream AutoPie commit
+`8c5e83b119b3d7517141c704b8d17a6490a8820b`, which is the same commit tagged
+upstream as `v0.19.3-beta`.
 
 The published upstream APK for that exact source revision is:
 
-- Asset: `AutoPie-v0.19.0-beta-aarch64.apk`
+- Asset: `AutoPie-v0.19.3-beta-aarch64.apk`
 - Architecture: `aarch64 / arm64-v8a`
 - Package: `com.autopi`
 - AutoPie minSdk: API 27
 - AutoPie targetSdk: API 28
-- SHA-256: `3cbf48102124ddd20b36637074ef40b032b55146f3afd07a5c6eddbf1078ccd6`
+- SHA-256: `c1d140a165f09af8433e8d0b855a363f8a394477038a1b1cb1951f9e444ef7a7`
 
 ## Recommended installation from Termux
 
